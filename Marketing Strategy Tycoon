@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketing Strategy Tycoon</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Marketing Strategy Tycoon</h1>
+    <p>Run your marketing campaign and watch your results unfold!</p>
+
+    <div id="campaignDetails">
+      <h2>Campaign Details</h2>
+      <p><strong>Budget:</strong> $<span id="budget">5000</span></p>
+      <p><strong>Clicks:</strong> <span id="clicks">0</span></p>
+      <p><strong>Conversions:</strong> <span id="conversions">0</span></p>
+    </div>
+
+    <div id="decisions">
+      <h2>Make Your Decisions</h2>
+      <button onclick="runCampaign('seo')">Invest in SEO ($1000)</button>
+      <button onclick="runCampaign('social')">Invest in Social Media Ads ($1500)</button>
+      <button onclick="runCampaign('email')">Invest in Email Campaign ($1200)</button>
+    </div>
+
+    <div id="result">
+      <h2>Campaign Result</h2>
+      <p id="resultText">Choose a strategy to begin!</p>
+    </div>
+
+    <div id="levelUp" style="display: none;">
+      <h2>Level Up!</h2>
+      <p>You've unlocked new strategies. Keep growing your business!</p>
+      <button onclick="nextLevel()">Continue</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2em;
+  color: #2d3e50;
+}
+
+h2 {
+  color: #4a90e2;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#resultText {
+  font-size: 1.2em;
+  color: #555;
+}
+
+#levelUp {
+  margin-top: 20px;
+}
+
+let budget = 5000;
+let clicks = 0;
+let conversions = 0;
+let level = 1;
+
+const budgetDisplay = document.getElementById('budget');
+const clicksDisplay = document.getElementById('clicks');
+const conversionsDisplay = document.getElementById('conversions');
+const resultText = document.getElementById('resultText');
+const levelUpSection = document.getElementById('levelUp');
+
+function runCampaign(strategy) {
+  if (budget <= 0) {
+    alert("You don't have enough budget!");
+    return;
+  }
+
+  let cost, newClicks, newConversions;
+  
+  switch (strategy) {
+    case 'seo':
+      cost = 1000;
+      newClicks = Math.floor(Math.random() * 200) + 50;
+      newConversions = Math.floor(newClicks * 0.05);
+      break;
+    case 'social':
+      cost = 1500;
+      newClicks = Math.floor(Math.random() * 300) + 100;
+      newConversions = Math.floor(newClicks * 0.07);
+      break;
+    case 'email':
+      cost = 1200;
+      newClicks = Math.floor(Math.random() * 150) + 30;
+      newConversions = Math.floor(newClicks * 0.1);
+      break;
+    default:
+      return;
+  }
+
+  if (budget >= cost) {
+    budget -= cost;
+    clicks += newClicks;
+    conversions += newConversions;
+    
+    // Update UI
+    budgetDisplay.textContent = budget;
+    clicksDisplay.textContent = clicks;
+    conversionsDisplay.textContent = conversions;
+
+    // Show result
+    resultText.textContent = `You invested in ${strategy}. You got ${newClicks} clicks and ${newConversions} conversions.`;
+
+    // Check if it's time to level up
+    if (clicks >= 1000 && level === 1) {
+      levelUp();
+    }
+  } else {
+    alert("You don't have enough budget for this strategy!");
+  }
+}
+
+function levelUp() {
+  level++;
+  levelUpSection.style.display = "block";
+  document.getElementById("decisions").innerHTML = `
+    <h2>New Strategies Unlocked!</h2>
+    <button onclick="runCampaign('seo')">Invest in SEO ($1000)</button>
+    <button onclick="runCampaign('social')">Invest in Social Media Ads ($1500)</button>
+    <button onclick="runCampaign('email')">Invest in Email Campaign ($1200)</button>
+    <button onclick="runCampaign('video')">Invest in Video Ads ($2000)</button>
+    <button onclick="runCampaign('affiliate')">Start an Affiliate Program ($2500)</button>
+  `;
+}
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Hello World</h1>
+<p>I'm hosted with GitHub Pages.</p>
+</body>
+</html>
+function nextLevel() {
+  levelUpSection.style.display = "none";
+  alert('You have reached the next level. Continue to grow your campaign!');
+}
